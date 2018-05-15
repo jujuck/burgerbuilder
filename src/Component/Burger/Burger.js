@@ -3,7 +3,7 @@ import classes from './Burger.css';
 import BurgerIngredient from './BurgerIngredient/BurgerIngredient';
 
 const Burger = (props) => {
-    //Transfomration de l'objet Ingredient en un tableau de tableau propriété-value
+    //Transformation de l'objet Ingredient en un tableau de tableau propriété-value
     let transformedIngredients = Object.keys(props.ingredients)
         .map(igKey => {
             return [...Array(props.ingredients[igKey])].map((_, i) => {

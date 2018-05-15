@@ -9,7 +9,8 @@ class Orders extends Component {
         loading: true
     }
 
-
+    //Récupération des élements dans la base de donées et stockage dans un tableau
+    //Envoi des elements par props dans order
     componentDidMount() {
         axios.get('/orders.json')
             .then(res => {

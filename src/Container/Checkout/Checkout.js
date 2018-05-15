@@ -9,6 +9,7 @@ class Checkout extends Component {
         totalPrice: 0
     }
 
+    //Mise à jour des ingredients et prix pour affichage en page de checkout
     componentWillMount() {
         const query = new URLSearchParams(this.props.location.search);
         const ingredients = {};
@@ -23,10 +24,12 @@ class Checkout extends Component {
         this.setState({ingredients: ingredients, totalPrice: price});
     }
 
+    //Gestion du bouton annulation
     CheckoutAnnulationHandler = () => {
         this.props.history.goBack();
     }
 
+    //Gestion du bouton continuez
     CheckoutContinueHandler = () => {
         this.props.history.replace('/checkout/contact-data')
     }
