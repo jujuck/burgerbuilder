@@ -4,6 +4,9 @@ import classes from './Order.css'
 const Order = (props) => {
     const ingredients = [];
     console.log(props.ingredients)
+
+    //Création d'un tableau pour la gestion des ingredients et prix
+    //Objectif : affichage dans la page order
     for (let ingredientName in props.ingredients) {
         ingredients.push(
             {name: ingredientName, 

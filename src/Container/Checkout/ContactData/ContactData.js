@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import { connect } from 'react-redux';
+
 import axios from '../../../axios-orders';
 import Button from '../../../Component/UI/Button/Button';
 import classes from './ContactData.css';
@@ -78,7 +80,7 @@ class ContactData extends Component {
                         {value: 'economique', displayValue: 'Economique'}
                     ]
                 },
-                value: '',
+                value: 'rapide',
                 valid: true
             },
         },
@@ -97,7 +99,7 @@ class ContactData extends Component {
          }
          //Récupération du prix et des ingrédients
          const order = {
-             ingredients : this.props.ingredients,
+             ingredients : this.props.ings,
              price: this.props.price,
              orderData: formData
          }
@@ -154,7 +156,6 @@ class ContactData extends Component {
         let formIsValid = true;
         for (let inputIdentifier in updatedOrderForm) {
             formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
-            console.log("ok")
         }
 
         //Modification du state par réintroduction de sa copie
@@ -200,6 +201,14 @@ class ContactData extends Component {
         );
     }
 }
+
+
+const mapStateToProps = state => {
+    return {
+        ings: state.ingredients, //Récupération du state du reducer
+        price: state.totalPrice
+    }
+}
            
-export default ContactData;
+export default connect(mapStateToProps)(ContactData);
            
