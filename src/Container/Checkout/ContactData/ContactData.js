@@ -6,6 +6,8 @@ import Button from '../../../Component/UI/Button/Button';
 import classes from './ContactData.css';
 import Spinner from '../../../Component/UI/Spinner/Spinner';
 import Input from '../../../Component/UI/Input/Input';
+import withErrorHandler from '../../../Hoc/withErrorHandler/withErrorHandler';
+import * as actions from '../../../store/actions/indexAction';
 
 class ContactData extends Component {
     state = {
@@ -81,36 +83,29 @@ class ContactData extends Component {
                     ]
                 },
                 value: 'rapide',
+                validation: {},
                 valid: true
             },
         },
         formIsValid: false,
-        loading: false
     }
 
     //Fonction d'envoi des élements dans la base de données
     orderHandler = (event) => {
         event.preventDefault();
-         this.setState({loading : true});
          //récupération des élements Name et value définie dans le state
          const formData = {};
          for (let formElementIdentifier in this.state.orderForm) {
              formData[formElementIdentifier] = this.state.orderForm[formElementIdentifier].value;
          }
          //Récupération du prix et des ingrédients
-         const order = {
+         const orderData = {
              ingredients : this.props.ings,
              price: this.props.price,
              orderData: formData
          }
 
-         //Envoi vers la base de données
-         axios.post('/orders.json', order)
-             .then(response => {this.setState({ loading: false})
-            this.props.history.push('/')
-         })
-             .catch(error => {this.setState({ loading: false})
-         });
+         this.props.onOrderBurger(orderData)
     }
 
     //Vérification du formulaire avant envoie
@@ -146,9 +141,8 @@ class ContactData extends Component {
         };
         //Modification de la valeur de l'element définie
         updatedFormElement.value = event.target.value;
-        if (updatedFormElement !== 'deliveryMethod') {
-            updatedFormElement.valid = this.ckeckValidity(updatedFormElement.value, updatedFormElement.validation);
-        }
+        updatedFormElement.valid = this.ckeckValidity(updatedFormElement.value, updatedFormElement.validation);
+        
         //Réintroduction de l'element Identifié dans la copie du state
         updatedOrderForm[inputIdentifier] = updatedFormElement;
 
@@ -189,7 +183,7 @@ class ContactData extends Component {
                 ))}
                 <Button btnType="Success" disabled={!this.state.formIsValid} clicked={this.orderHandler}>Commandez</Button>
             </form>);
-        if (this.state.loading) {
+        if (this.props.loading) {
             form = <Spinner />;
         }
 
@@ -205,10 +199,17 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
     return {
-        ings: state.ingredients, //Récupération du state du reducer
-        price: state.totalPrice
+        ings: state.burgerBuilder.ingredients, //Récupération du state du reducer
+        price: state.burgerBuilder.totalPrice,
+        loading: state.order.loading
     }
 }
+
+const mapDispatchToProps = dispatch => {
+    return {
+        onOrderBurger: (orderData) => dispatch(actions.purchaseBurger(orderData))
+    };
+};
            
-export default connect(mapStateToProps)(ContactData);
+export default connect(mapStateToProps, mapDispatchToProps)(withErrorHandler(ContactData, axios));
            
