@@ -105,6 +105,7 @@ const mapStateToProps = state => {
     };
 };
 
+
 const mapDispatchToProps = dispatch => {
     return {
         onIngredientAdded: (ingName) => dispatch(actions.addIngredient(ingName)),
