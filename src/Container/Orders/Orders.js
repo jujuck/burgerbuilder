@@ -12,7 +12,8 @@ class Orders extends Component {
 
     //Lancement de la fonction executée par indexActions-orderReducer
     componentDidMount() {
-        this.props.onFetchOrders();
+        console.log(this.props.token)
+        this.props.onFetchOrders(this.props.token); //
     }
 
     render () {
@@ -38,13 +39,14 @@ class Orders extends Component {
 const mapStateToProps = state => {
     return {
         orders: state.order.orders,
-        loading: state.order.loading
+        loading: state.order.loading,
+        token: state.auth.token
     };
 };
 
 const mapDispatchToProps = dispatch => {
     return {
-        onFetchOrders: () => dispatch(action.fetchOrders())
+        onFetchOrders: (token) => dispatch(action.fetchOrders(token))
     };
 };
 

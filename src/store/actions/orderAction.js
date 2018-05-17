@@ -24,12 +24,12 @@ export const purchaseBurgerStart = () => {
     }
 }
 
-export const purchaseBurger = (orderData) => {
+export const purchaseBurger = (orderData, token) => { 
     return dispatch => {
         //Lancement de la fonction pour le spinner avec loading => true
         dispatch(purchaseBurgerStart())
         //Envoi vers la base de données
-        axios.post('/orders.json', orderData)
+        axios.post('/orders.json?auth=' + token, orderData) //
         .then(response => {
             dispatch(purchaseBurgerSuccess(response.data.name, orderData ) );
         } )
@@ -67,12 +67,13 @@ export const fetchOrderStart = () => {
     };
 };
 
-export const fetchOrders = () => {
+export const fetchOrders = ( token ) => { //
+    console.log(token)
     return dispatch => {
         //Lancement de la fonction Spinner
         dispatch(fetchOrderStart());
         //Récupération des données et gestion des erreurs
-        axios.get('/orders.json')
+        axios.get('/orders.json?auth=' + token)
         .then(res => {
             const fetchedOrders = [];
             for (let key in res.data) {
@@ -89,3 +90,4 @@ export const fetchOrders = () => {
         })
     }
 }
+

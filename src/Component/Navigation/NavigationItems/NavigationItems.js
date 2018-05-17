@@ -7,7 +7,10 @@ const NavigationItems = (props) => {
         <ul className={classes.NavigationItems}>
             <NavigationItem link="/" exact>Burger Builder</NavigationItem>
             <NavigationItem link="/orders">Orders</NavigationItem>
-            <NavigationItem link="/Auth">Se connecter</NavigationItem>
+            { props.isAuth? 
+                <NavigationItem link="/logout">Se déconnecter</NavigationItem>
+                : <NavigationItem link="/auth">Se connecter</NavigationItem>
+            }
         </ul>
     )
 };
